@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { loginUser, getMyProfile } from "./services/api";
+import LoginForm from "./components/LoginForm";
+import Profile from "./pages/Profile";
 
 function App() {
+  const [token, setToken] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  async function handleLogin(usuario, contraseña) {
+    try {
+      const accessToken = await loginUser(usuario, contraseña);
+      setToken(accessToken);
+      const profile = await getMyProfile(accessToken);
+      setUserData(profile);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {!token ? (
+        <LoginForm onLogin={handleLogin} />
+      ) : (
+        <Profile user={userData} />
+      )}
     </div>
   );
 }
