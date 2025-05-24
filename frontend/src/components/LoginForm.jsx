@@ -1,31 +1,46 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/api";  // Asume que tienes esta función para llamar API
 
-function LoginForm({ onLogin }) {
+export default function LoginForm() {
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    onLogin(usuario, contraseña);
-  };
+    try {
+      const token = await loginUser(usuario, contraseña);
+      localStorage.setItem("token", token);
+      alert("Login exitoso");
+      navigate("/perfil"); // Redirige a perfil después de login
+    } catch (error) {
+      alert(error.message);
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow">
+      <h2 className="text-xl font-bold mb-4">Iniciar Sesión</h2>
       <input
         type="text"
         placeholder="Usuario"
         value={usuario}
         onChange={(e) => setUsuario(e.target.value)}
+        className="w-full p-2 mb-4 border rounded"
+        required
       />
       <input
         type="password"
         placeholder="Contraseña"
         value={contraseña}
         onChange={(e) => setContraseña(e.target.value)}
+        className="w-full p-2 mb-4 border rounded"
+        required
       />
-      <button type="submit">Ingresar</button>
+      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+        Ingresar
+      </button>
     </form>
   );
 }
-
-export default LoginForm;

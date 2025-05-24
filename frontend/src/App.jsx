@@ -1,27 +1,22 @@
-import React, { useState } from "react";
+// src/App.jsx
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
 import LoginForm from "./components/LoginForm";
+import Profile from "./pages/Profile";
 
 function App() {
-  const [token, setToken] = useState(null);
-
-  const handleLoginSuccess = (newToken) => {
-    setToken(newToken);
-    // Aquí podrías guardar en localStorage para persistencia
-    // localStorage.setItem("token", newToken);
-  };
-
   return (
-    <div className="App">
-      {!token ? (
-        <LoginForm onLoginSuccess={handleLoginSuccess} />
-      ) : (
-        <div>
-          <h1>Bienvenido a la app</h1>
-          <p>Token: {token}</p>
-          {/* Aquí vendría el resto de la app luego de autenticación */}
-        </div>
-      )}
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-100">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/perfil" element={<Profile />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
