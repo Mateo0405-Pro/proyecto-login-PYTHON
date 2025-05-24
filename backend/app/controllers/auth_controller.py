@@ -6,6 +6,7 @@ from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta
 from fastapi import status
+from jose.exceptions import JWTError
 
 # Clave secreta para JWT (cambia esto por algo más seguro en producción)
 SECRET_KEY = "supersecreto"
