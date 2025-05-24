@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.models.usuario import Rol, Usuario  # Esto va antes de todo
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(
@@ -7,6 +8,21 @@ app = FastAPI(
     description="API REST para gestión de usuarios y autenticación con FastAPI y SQL Server",
     version="0.1"
 )
+
+# Configuración de orígenes permitidos para CORS (tu frontend)
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Permite solo estos orígenes
+    allow_credentials=True,
+    allow_methods=["*"],    # Permite todos los métodos HTTP (GET, POST, PUT, DELETE, etc)
+    allow_headers=["*"],    # Permite todos los headers
+)
+
 
 # Después importa y registra las rutas
 from app.routes.auth_routes import router as auth_router
