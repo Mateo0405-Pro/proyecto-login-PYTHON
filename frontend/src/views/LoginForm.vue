@@ -2,20 +2,8 @@
   <div class="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow">
     <h2 class="text-xl font-bold mb-4">Iniciar Sesión</h2>
     <form @submit.prevent="handleSubmit">
-      <input
-        v-model="usuario"
-        type="text"
-        placeholder="Usuario"
-        required
-        class="input"
-      />
-      <input
-        v-model="contraseña"
-        type="password"
-        placeholder="Contraseña"
-        required
-        class="input"
-      />
+      <input v-model="usuario" type="text" placeholder="Usuario" required class="input" />
+      <input v-model="contraseña" type="password" placeholder="Contraseña" required class="input" />
       <button type="submit" class="btn">Ingresar</button>
     </form>
   </div>
@@ -25,6 +13,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../stores/user";
+import { API_URL } from "../config";
 
 const usuario = ref("");
 const contraseña = ref("");
@@ -33,8 +22,7 @@ const userStore = useUserStore();
 
 async function handleSubmit() {
   try {
-    // Petición login
-    const res = await fetch("http://localhost:8000/login", {
+    const res = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ usuario: usuario.value, contraseña: contraseña.value }),
@@ -50,7 +38,7 @@ async function handleSubmit() {
     userStore.setToken(data.access_token);
 
     // Obtener perfil
-    const profileRes = await fetch("http://localhost:8000/mi-perfil", {
+    const profileRes = await fetch(`${API_URL}/mi-perfil`, {
       headers: { Authorization: `Bearer ${data.access_token}` },
     });
 
@@ -64,24 +52,3 @@ async function handleSubmit() {
   }
 }
 </script>
-
-<style>
-.input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.btn {
-  width: 100%;
-  background-color: #3b82f6;
-  color: white;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.btn:hover {
-  background-color: #2563eb;
-}
-</style>

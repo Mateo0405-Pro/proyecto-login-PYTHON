@@ -14,7 +14,6 @@
     <div v-if="perfil.IdRol === 1" class="mt-8">
       <h3 class="text-xl font-semibold mb-4">Administración</h3>
       <router-link to="/usuarios" class="btn-admin">Gestionar Usuarios</router-link>
-      <!-- Aquí agregarás más funcionalidades admin -->
     </div>
   </div>
 </template>
@@ -24,7 +23,7 @@ import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
 
 export default {
-  name: "UserProfile",  // <--- Cambiado para evitar error de nombre simple
+  name: "UserProfile", // Nombre multi-palabra para evitar error ESLint
   setup() {
     const userStore = useUserStore();
     const router = useRouter();
@@ -40,17 +39,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.btn-admin {
-  display: inline-block;
-  background-color: #2563eb;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
-  text-decoration: none;
-}
-.btn-admin:hover {
-  background-color: #1d4ed8;
-}
-</style>

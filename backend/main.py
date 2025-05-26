@@ -13,6 +13,8 @@ app = FastAPI(
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://localhost:8081",    # <-- Agregado para Vue frontend
+    "http://127.0.0.1:8081",   # Opcional, por si usas esta ruta
 ]
 
 app.add_middleware(
@@ -47,4 +49,3 @@ def prueba_db():
 
 from app.routes.usuario_routes import router as usuario_router
 app.include_router(usuario_router)
-
